@@ -87,9 +87,11 @@ public class PaymentService {
 			oldPayment.setPayment_type(newPayment.getPayment_type());
 		}
 		
-		if(newPayment.getValue() != null) {
+		if(newPayment.getValue()() != null) {
 			oldPayment.setValue(newPayment.getValue());
 		}
+		
+		
 		
 		return oldPayment;
 	}
