@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -14,9 +15,9 @@ public class Auditing {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     
-    @OneToOne
+    @ManyToOne()
     @JoinColumn (name ="fk_payment")
-    private long product_code;
+    private Payment product_code;
     
     private Date dateTime;
     
@@ -30,7 +31,7 @@ public class Auditing {
 		this.operation = operation;
 	}
 
-	public Auditing (long id, long product_code, String operation, Date dateTime) {
+	public Auditing (long id, Payment product_code, String operation, Date dateTime) {
     	this.id=id;
     	this.product_code = product_code;
     	this.dateTime = dateTime;
@@ -45,11 +46,11 @@ public class Auditing {
 		this.id = id;
 	}
 
-	public long getProduct_code() {
+	public Payment getProduct_code() {
 		return product_code;
 	}
 
-	public void setProduct_code(long product_code) {
+	public void setProduct_code(Payment product_code) {
 		this.product_code = product_code;
 	}
 

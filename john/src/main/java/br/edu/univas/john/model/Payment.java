@@ -18,7 +18,7 @@ public class Payment{
 	  
 	  private Date due_date;
 	  
-	  private double value;
+	  private Double value;
 	  
 	  private String payment_type;
 

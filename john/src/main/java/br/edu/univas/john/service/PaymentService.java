@@ -22,6 +22,8 @@ public class PaymentService {
 
 	AuditingRepository auditingRepository;
 	
+	Double value;
+	
 	Random random = new Random();
 
 	public ResponseEntity<Object> getPaymentById(long id) {
@@ -36,7 +38,7 @@ public class PaymentService {
 	public ResponseEntity<Object> createPayment(Payment newPayment) {
 		try {
 			Payment paymentCreated = paymentRepository.save(newPayment);
-			Auditing log = new Auditing(random.nextInt(1), paymentCreated.getOrderCode(), "CREATE", newDate());
+			Auditing log = new Auditing(random.nextInt(1), paymentCreated, "CREATE", newDate());
 			auditingRepository.save(log);
 			return ResponseEntity.ok(paymentCreated);
 		}catch (Exception e) {
@@ -54,7 +56,7 @@ public class PaymentService {
 		Optional<Payment> oldPayment = paymentRepository.findById(id);
 		if (oldPayment.isPresent()) {
 			Payment PaymentUpdated = paymentRepository.save(buildPaymentToUpdate(oldPayment.get(), payment));
-			Auditing log = new Auditing(random.nextInt(1), PaymentUpdated.getOrderCode(), "UPDATE", newDate());
+			Auditing log = new Auditing(random.nextInt(1), PaymentUpdated, "UPDATE", newDate());
 			auditingRepository.save(log);
 			
 			return ResponseEntity.ok(PaymentUpdated);
@@ -66,7 +68,7 @@ public class PaymentService {
 		Optional<Payment> payment = paymentRepository.findById(id);
 		if (payment.isPresent()){
 			paymentRepository.delete(payment.get());
-			Auditing log = new Auditing(random.nextInt(1), id, "DELETE", newDate());
+			Auditing log = new Auditing(random.nextInt(1), payment.get(), "DELETE", newDate());
 			auditingRepository.save(log);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
@@ -87,11 +89,9 @@ public class PaymentService {
 			oldPayment.setPayment_type(newPayment.getPayment_type());
 		}
 		
-		if(newPayment.getValue()() != null) {
+		if(newPayment.getValue() != null) {
 			oldPayment.setValue(newPayment.getValue());
-		}
-		
-		
+		}		
 		
 		return oldPayment;
 	}
